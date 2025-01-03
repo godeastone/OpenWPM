@@ -14,7 +14,7 @@
 # conda environment if it exists.
 
 # Arguments:
-# --skip-create: Doesn't change the openwpm mamba environment
+# --skip-create: Doesn't change the openwpm conda environment
 
 
 set -e
@@ -25,27 +25,25 @@ eval "$(conda shell.bash hook)"
 if [ "$1" != "--skip-create" ]; then
   echo 'Creating / Overwriting openwpm conda environment.'
   # `PYTHONNOUSERSITE` set so python ignores local user site libraries when building the env
-  # See: https://github.com/openwpm/OpenWPM/pull/682#issuecomment-645648939
-  case "$(uname -s)" in
-  Darwin)
-    echo '...using the osx-64 channel for MacOS dependencies'
-    CONDA_SUBDIR=osx-64 PYTHONNOUSERSITE=True mamba env create --force -q -f environment.yaml
-    ;;
-  *)
-    PYTHONNOUSERSITE=True mamba env create --force -q -f environment.yaml
-    ;;
-  esac
-
+  # See: https://github.com/mozilla/OpenWPM/pull/682#issuecomment-645648939
+  PYTHONNOUSERSITE=True conda env create -f environment.yaml
 fi
 
-echo 'Activating environment.'
+# echo 'Activating environment.'
 conda activate openwpm
+pip install tqdm
+pip install leveldb
+pip install adblockparser
+pip install openwpm_utils
+pip install scikit-learn==1.3.0
+pip install networkx==3.2.1
+pip install urllib3==1.21.1
 
-echo 'Installing firefox.'
-./scripts/install-firefox.sh
+# echo 'Installing firefox.'
+# ./scripts/install-firefox.sh
 
-echo 'Building extension.'
-./scripts/build-extension.sh
+# echo 'Building extension.'
+# ./scripts/build-extension.sh
 
-echo 'Installation complete, activate your new environment by running:'
-echo 'conda activate openwpm'
+# echo 'Installation complete, activate your new environment by running:'
+# echo 'conda activate openwpm'
