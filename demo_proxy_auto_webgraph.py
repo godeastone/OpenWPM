@@ -14,10 +14,8 @@ from multiprocessing import Pool, Process
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--crawler-id', type=int)
-parser.add_argument('--shell-num', type=int)
 parser.add_argument('--mapping-id', type=str)
 args = parser.parse_args()
-shell = args.shell_num
 
 def crawling(crawler_idx, sites_all, port_num):
     # Loads the default ManagerParams
@@ -48,7 +46,7 @@ def crawling(crawler_idx, sites_all, port_num):
 
     # Update TaskManager configuration (use this for crawl-wide settings)
     manager_params.data_directory = Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph/")
-    manager_params.log_path = Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph_{}/log_dir/openwpm_{}.log".format(shell, crawler_idx))
+    manager_params.log_path = Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph/log_dir/openwpm_{}.log".format(crawler_idx))
 
     # memory_watchdog and process_watchdog are useful for large scale cloud crawls.
     # Please refer to docs/Configuration.md#platform-configuration-options for more information
@@ -59,8 +57,8 @@ def crawling(crawler_idx, sites_all, port_num):
     with TaskManager(
         manager_params,
         browser_params,
-        SQLiteStorageProvider(Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph_{}/crawl_dir/crawl-data_{}.sqlite".format(shell, crawler_idx))),
-        LevelDbProvider(Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph_{}/content_dir/content_{}.ldb".format(shell, crawler_idx))),
+        SQLiteStorageProvider(Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph/crawl_dir/crawl-data_{}.sqlite".format(crawler_idx))),
+        LevelDbProvider(Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph/content_dir/content_{}.ldb".format(crawler_idx))),
     ) as manager:
         # Visits the sites
         for index, site in enumerate(sites_all):
@@ -93,7 +91,7 @@ def crawling(crawler_idx, sites_all, port_num):
 NUM_BROWSERS = 1
 
 # For test
-map_csv = "/yopo-artifact/data/rendering_stream/mod_mappings_webgraph_{}/map_mod_{}.csv".format(args.shell_num, args.mapping_id)
+map_csv = "/yopo-artifact/data/rendering_stream/mod_mappings_webgraph/map_mod_{}.csv".format(args.mapping_id)
 
 url_list = []
 with open(map_csv, 'r') as csv_file:
