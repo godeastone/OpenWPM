@@ -47,7 +47,7 @@ def crawling(crawler_idx, sites_all, port_num):
 
 
     # Update TaskManager configuration (use this for crawl-wide settings)
-    manager_params.data_directory = Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph_{}/".format(shell))
+    manager_params.data_directory = Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph/")
     manager_params.log_path = Path("/yopo-artifact/OpenWPM/datadir_proxy_webgraph_{}/log_dir/openwpm_{}.log".format(shell, crawler_idx))
 
     # memory_watchdog and process_watchdog are useful for large scale cloud crawls.
